@@ -19,5 +19,4 @@ Pod::Spec.new do |s|
     
     s.requires_arc = true
     s.source_files = 'EFNavigationBar/**/*'
-    s.dependency 'EFFoundation/Device', '~> 1.3.0'
 end

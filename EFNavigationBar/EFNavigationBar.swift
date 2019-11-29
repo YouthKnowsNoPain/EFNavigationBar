@@ -25,7 +25,6 @@
 //  THE SOFTWARE.
 
 import UIKit
-import EFFoundation
 
 public class EFNavigationBar: UIView {
 
@@ -34,8 +33,8 @@ public class EFNavigationBar: UIView {
     public static var defaultNavBarTitleSize: CGFloat = 18
     public static var defaultStatusBarStyle: UIStatusBarStyle = UIStatusBarStyle.default
 
-    public static var defaultNavBarBottom: CGFloat = UIDevice.isiPhoneXSeries ? 88 : 64
-    public static var defaultTabBarHeight: CGFloat = UIDevice.isiPhoneXSeries ? 83 : 49
+    public static var defaultNavBarBottom: CGFloat = UIDevice.isiPhoneXSeries() ? 88 : 64
+    public static var defaultTabBarHeight: CGFloat = UIDevice.isiPhoneXSeries() ? 83 : 49
 
     public var onClickLeftButton: (()->())?
     public var onClickRightButton: (()->())?
@@ -142,7 +141,7 @@ public class EFNavigationBar: UIView {
         backgroundView.backgroundColor = EFNavigationBar.defaultNavBarBackgroundColor
     }
     public func updateFrame() {
-        let top: CGFloat = UIDevice.isiPhoneXSeries ? 44 : 20
+        let top: CGFloat = UIDevice.isiPhoneXSeries() ? 44 : 20
         let margin: CGFloat = 0
         let buttonHeight: CGFloat = 44
         let buttonWidth: CGFloat = 44
@@ -155,6 +154,15 @@ public class EFNavigationBar: UIView {
         rightButton.frame = CGRect(x: UIScreen.main.bounds.size.width - buttonWidth - margin, y: top, width: buttonWidth, height: buttonHeight)
         titleLabel.frame = CGRect(x: (UIScreen.main.bounds.size.width - titleLabelWidth) / 2.0, y: top, width: titleLabelWidth, height: titleLabelHeight)
         bottomLine.frame = CGRect(x: 0, y: bounds.height - 0.5, width: UIScreen.main.bounds.size.width, height: 0.5)
+    }
+}
+
+extension UIDevice {
+    public static func isiPhoneXSeries() -> Bool {
+        guard #available(iOS 11.0, *) else {return false}
+        
+        let window = UIApplication.shared.windows.first
+        return (window?.safeAreaInsets.bottom ?? 0.0) > 0.0
     }
 }
 
